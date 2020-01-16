@@ -1,5 +1,6 @@
 NcRNABoxPlot<-function(Exp,GTF,FileName) {
 	library('rtracklayer')
+  library('ggplot2')
 	FileName<-FileName
 	GTF<-import(GTF)
 	Counts<-read.delim(Exp)
@@ -28,8 +29,7 @@ NcRNABoxPlot<-function(Exp,GTF,FileName) {
     dfcounts<-as.data.frame(counts)
 	dfcounts$means<-as.numeric(as.character(dfcounts$means))
 	pdf(paste("NcRnaTypes",FileName,"BoxPlot.pdf",sep=""), width=15, height=15)
-	par(cex.axis=0.5)
-	boxplot(dfcounts[,1]~dfcounts[,2])
+	ggplot(dfcounts,aes(x=type,y=means,color=type))+geom_boxplot()+theme(axis.text.x=element_text(angle=90,hjust=1))
 	dev.off()
 
   
